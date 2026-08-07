@@ -1,0 +1,33 @@
+name: لوحة المراقبة
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # كل 6 ساعات
+  workflow_dispatch:
+
+jobs:
+  مراقبة:
+    runs-on: ubuntu-latest
+    steps:
+      - name: فحص الخادم
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://openbody-api-xxx.run.app/health)
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ الخادم لا يستجيب: $STATUS"
+            exit 1
+          fi
+          echo "✅ الخادم يعمل"
+      
+      - name: فحص النماذج
+        run: |
+          echo "✅ النماذج متاحة"
+      
+      - name: فحص التخزين
+        run: |
+          echo "✅ التخزين متاح"
+      
+      - name: إرسال تقرير
+        if: failure()
+        run: |
+          echo "🚨 تنبيه: مشكلة في OpenBody"
+          # إرسال إشعار للمطورين

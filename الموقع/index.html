@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenBody - قدر أضرار سيارتك بالذكاء الاصطناعي</title>
+    <meta name="description" content="التطبيق الأول مفتوح المصدر لتقدير أضرار السيارات وتكاليف الإصلاح باستخدام الذكاء الاصطناعي.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .hero-bg { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+    </style>
+    <script src="analytics.js" async></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-sm p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <img src="الشعار.svg" alt="OpenBody Logo" class="h-10">
+                <span class="text-2xl font-black text-green-600">OpenBody</span>
+            </div>
+            <div class="hidden md:flex gap-6 font-bold text-gray-600">
+                <a href="#features" class="hover:text-green-600">المميزات</a>
+                <a href="#how-it-works" class="hover:text-green-600">كيف يعمل</a>
+                <a href="https://github.com/OpenBody/OpenBody" target="_blank" class="hover:text-green-600">المصدر المفتوح</a>
+            </div>
+            <a href="#download" class="bg-green-600 text-white px-6 py-2 rounded-full font-bold hover:bg-green-700 transition">حمّل التطبيق</a>
+        </div>
+    </nav>
+
+    <header class="hero-bg text-white py-20 text-center px-4">
+        <h1 class="text-5xl md:text-7xl font-black mb-6">لا تدع الورش تستغلك!</h1>
+        <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto opacity-90">صوّر الضرر، واعرف التكلفة الحقيقية للإصلاح في ثوانٍ باستخدام 5 طبقات من الذكاء الاصطناعي. مجاني ومفتوح المصدر للأبد.</p>
+        <div class="flex justify-center gap-4 flex-wrap" id="download">
+            <a href="#" class="bg-white text-green-700 px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition flex items-center gap-2">
+                <span>📱 حمل للأندرويد</span>
+            </a>
+            <a href="#" class="bg-gray-900 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition flex items-center gap-2">
+                <span>🍎 حمل للآيفون</span>
+            </a>
+        </div>
+    </header>
+
+    <section id="features" class="py-20 container mx-auto px-4">
+        <h2 class="text-4xl font-black text-center mb-16 text-gray-800">لماذا OpenBody؟</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                <div class="text-5xl mb-4">🤖</div>
+                <h3 class="text-2xl font-bold mb-4">ذكاء اصطناعي متقدم</h3>
+                <p class="text-gray-600">5 طبقات تحليل تشمل YOLOv8 و SAM2 لضمان أدق نتيجة ممكنة.</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                <div class="text-5xl mb-4">🔒</div>
+                <h3 class="text-2xl font-bold mb-4">خصوصية تامة</h3>
+                <p class="text-gray-600">صورك تُعالج على جهازك. لا يوجد سيرفرات تجسس، ولا بيع للبيانات.</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                <div class="text-5xl mb-4">🆓</div>
+                <h3 class="text-2xl font-bold mb-4">مجاني بالكامل</h3>
+                <p class="text-gray-600">لا اشتراكات ولا إعلانات مزعجة. بنيناه للمجتمع وسيظل للمجتمع.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-10 text-center">
+        <p class="mb-4">صُنع بحب من المجتمع العربي ❤️</p>
+        <a href="https://github.com/OpenBody/OpenBody" target="_blank" class="text-gray-400 hover:text-white underline">ساهم معنا في GitHub</a>
+    </footer>
+</body>
+</html>
