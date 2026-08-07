@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth, signInWithGoogle, logOut } from '../lib/firebase';
+import { auth, logOut } from '../lib/firebase';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signIn: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -25,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn: signInWithGoogle, signOut: logOut }}>
+    <AuthContext.Provider value={{ user, loading, signOut: logOut }}>
       {!loading && children}
     </AuthContext.Provider>
   );

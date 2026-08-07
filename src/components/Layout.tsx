@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function Layout() {
   const location = useLocation();
-  const { user, signIn, signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { name: 'الرئيسية', path: '/', icon: <CarFront className="w-5 h-5" /> },
@@ -44,7 +44,7 @@ export default function Layout() {
               <div className="h-6 w-px bg-slate-200 mx-2"></div>
               {user ? (
                 <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium text-slate-700">{user.displayName || user.email}</span>
+                  <span className="text-sm font-medium text-slate-700" dir="ltr">{user.displayName || user.email || user.phoneNumber}</span>
                   <button
                     onClick={signOut}
                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
@@ -54,13 +54,13 @@ export default function Layout() {
                   </button>
                 </div>
               ) : (
-                <button
-                  onClick={signIn}
+                <Link
+                  to="/analysis"
                   className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-primary-500 text-white hover:bg-primary-600 transition-colors"
                 >
                   <LogIn className="w-4 h-4" />
                   تسجيل الدخول
-                </button>
+                </Link>
               )}
             </nav>
           </div>

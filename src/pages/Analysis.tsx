@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { UploadCloud, Loader2, AlertTriangle, ShieldCheck, Download, Share2, Wrench, Camera } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { LoginForm } from '../components/LoginForm';
+import { LoadingScreen } from '../components/LoadingScreen';
+import { DamageCard } from '../components/DamageCard';
 
 type Step = 'upload' | 'analyzing' | 'results';
 
 export default function Analysis() {
   const [step, setStep] = useState<Step>('upload');
   const [progress, setProgress] = useState(0);
+  const { user, loading } = useAuth();
 
   // Simulated AI analysis progress
   useEffect(() => {
@@ -28,6 +33,18 @@ export default function Analysis() {
     setStep('analyzing');
     setProgress(0);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LoginForm />;
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -67,24 +84,10 @@ export default function Analysis() {
 
       {/* Analyzing State */}
       {step === 'analyzing' && (
-        <div className="mt-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-12 flex flex-col items-center text-center">
-          <div className="relative mb-8">
-            <div className="absolute inset-0 bg-primary-50 rounded-full animate-ping opacity-75"></div>
-            <div className="relative bg-primary-500 p-6 rounded-full">
-              <Loader2 className="w-10 h-10 text-white animate-spin" />
-            </div>
-          </div>
-          <h3 className="text-xl font-bold text-slate-800 mb-2">جاري تحليل الصورة...</h3>
-          <p className="text-slate-500 mb-8 max-w-md">الذكاء الاصطناعي يقوم الآن بكشف المركبة، وتقسيم الأجزاء، وتصنيف الأضرار لتقدير التكلفة.</p>
-          
-          <div className="w-full max-w-md bg-slate-100 rounded-full h-3 mb-2 overflow-hidden">
-            <div 
-              className="bg-primary-500 h-full rounded-full transition-all duration-300 ease-out"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-          <span className="text-sm font-medium text-slate-600">{progress}%</span>
-        </div>
+        <LoadingScreen 
+          progress={progress / 100} 
+          message="الذكاء الاصطناعي يقوم الآن بكشف المركبة، وتقسيم الأجزاء، وتصنيف الأضرار لتقدير التكلفة."
+        />
       )}
 
       {/* Results State */}
@@ -137,25 +140,33 @@ export default function Analysis() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-800 mb-4">خطة الإصلاح المقترحة</h3>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <Wrench className="w-5 h-5 text-slate-400 mt-0.5 shrink-0" />
-                  <div>
-                    <p className="font-medium text-slate-800">سمكرة الرفرف الأيسر</p>
-                    <p className="text-sm text-slate-500">المدة المتوقعة: 4 ساعات عمل</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Wrench className="w-5 h-5 text-slate-400 mt-0.5 shrink-0" />
-                  <div>
-                    <p className="font-medium text-slate-800">دهان الصدام والرفرف (لون مطابق)</p>
-                    <p className="text-sm text-slate-500">المدة المتوقعة: 8 ساعات (تجهيز ورش)</p>
-                  </div>
-                </li>
-              </ul>
-              <div className="mt-6 p-4 bg-amber-50 rounded-lg flex items-start gap-3 text-amber-800 text-sm">
+            <div className="bg-slate-50 rounded-2xl p-6">
+              <h3 className="text-lg font-bold text-slate-800 mb-4">تفاصيل الأضرار</h3>
+              <div className="space-y-0">
+                <DamageCard 
+                  damage={{
+                    id: '1',
+                    part: 'الصدام الأمامي',
+                    type: 'انبعاج',
+                    severity: 'متوسط',
+                    decision: 'سمكرة ودهان',
+                    confidence: 0.94,
+                    cost: 800
+                  }} 
+                />
+                <DamageCard 
+                  damage={{
+                    id: '2',
+                    part: 'الرفرف الأيسر',
+                    type: 'خدش',
+                    severity: 'خفيف',
+                    decision: 'تلميع',
+                    confidence: 0.88,
+                    cost: 300
+                  }} 
+                />
+              </div>
+              <div className="mt-4 p-4 bg-amber-50 rounded-lg flex items-start gap-3 text-amber-800 text-sm">
                 <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
                 <p>التكلفة هي تقدير أولي مبني على الذكاء الاصطناعي، وقد تختلف قليلاً بعد الفحص اليدوي في الورشة.</p>
               </div>
@@ -163,7 +174,7 @@ export default function Analysis() {
 
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-center gap-4">
               <h3 className="text-lg font-bold text-slate-800 mb-2">الإجراءات التالية</h3>
-              <button className="w-full bg-primary-500 text-white py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors flex justify-center items-center gap-2">
+              <button className="w-full bg-primary-500 text-white py-3 rounded-xl font-bold hover:bg-primary-600 transition-colors flex justify-center items-center gap-2">
                 <Download className="w-5 h-5" />
                 تحميل التقرير (PDF)
               </button>
@@ -171,12 +182,12 @@ export default function Analysis() {
                 href={`https://wa.me/?text=${encodeURIComponent('🚗 *تقرير أضرار السيارة*\nالتكلفة: 1500 ريال\nالمدة: 12 ساعة\nرابط التقرير: https://openbody.app/report/123')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-[#25D366] text-white py-3 rounded-lg font-medium hover:bg-[#128C7E] transition-colors flex justify-center items-center gap-2"
+                className="w-full bg-[#25D366] text-white py-3 rounded-xl font-bold hover:bg-[#128C7E] transition-colors flex justify-center items-center gap-2"
               >
                 <Share2 className="w-5 h-5" />
                 مشاركة عبر واتساب
               </a>
-              <button className="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-800 transition-colors mt-2">
+              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors mt-2">
                 إرسال إلى ورشة معتمدة
               </button>
             </div>
