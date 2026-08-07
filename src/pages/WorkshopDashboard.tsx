@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 export default function WorkshopDashboard() {
   const stats = [
-    { label: 'طلبات جديدة', value: '12', icon: <Users className="w-6 h-6 text-blue-600" />, bg: 'bg-blue-100' },
+    { label: 'طلبات جديدة', value: '12', icon: <Users className="w-6 h-6 text-primary-500" />, bg: 'bg-primary-50' },
     { label: 'قيد الإصلاح', value: '8', icon: <Wrench className="w-6 h-6 text-amber-600" />, bg: 'bg-amber-100' },
     { label: 'مكتمل هذا الشهر', value: '45', icon: <CheckCircle className="w-6 h-6 text-emerald-600" />, bg: 'bg-emerald-100' },
     { label: 'الإيرادات التقديرية', value: '124K', icon: <TrendingUp className="w-6 h-6 text-purple-600" />, bg: 'bg-purple-100' },
@@ -73,7 +73,7 @@ export default function WorkshopDashboard() {
                     </td>
                     <td className="py-4 text-sm text-slate-600">{req.status}</td>
                     <td className="py-4 text-sm">
-                      <button className="text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                      <button className="text-primary-500 hover:text-blue-800 font-medium transition-colors">
                         إدارة
                       </button>
                     </td>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { UploadCloud, Loader2, AlertTriangle, ShieldCheck, Download, Share2, Wrench } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { UploadCloud, Loader2, AlertTriangle, ShieldCheck, Download, Share2, Wrench, Camera } from 'lucide-react';
 
 type Step = 'upload' | 'analyzing' | 'results';
 
@@ -40,15 +40,28 @@ export default function Analysis() {
 
       {/* Upload State */}
       {step === 'upload' && (
-        <div 
-          onClick={handleUpload}
-          className="mt-8 border-2 border-dashed border-slate-300 rounded-2xl bg-white p-16 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 hover:border-blue-400 transition-all group"
-        >
-          <div className="bg-blue-50 p-6 rounded-full group-hover:scale-110 transition-transform duration-300 mb-6">
-            <UploadCloud className="w-12 h-12 text-blue-500" />
+        <div className="mt-8 grid md:grid-cols-2 gap-6">
+          <div 
+            onClick={handleUpload}
+            className="border-2 border-dashed border-slate-300 rounded-2xl bg-white p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 hover:border-primary-500 transition-all group min-h-[300px]"
+          >
+            <div className="bg-primary-50 p-6 rounded-full group-hover:scale-110 transition-transform duration-300 mb-6">
+              <UploadCloud className="w-12 h-12 text-primary-500" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-800 mb-2">رفع من المعرض</h3>
+            <p className="text-slate-500 text-sm">يدعم JPG, PNG, HEIC</p>
           </div>
-          <h3 className="text-xl font-semibold text-slate-800 mb-2">اضغط هنا أو اسحب الصورة</h3>
-          <p className="text-slate-500 text-sm">يدعم JPG, PNG, HEIC (الحد الأقصى 10MB)</p>
+
+          <div 
+            onClick={handleUpload}
+            className="border-2 border-dashed border-slate-300 rounded-2xl bg-white p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 hover:border-primary-500 transition-all group min-h-[300px]"
+          >
+            <div className="bg-emerald-50 p-6 rounded-full group-hover:scale-110 transition-transform duration-300 mb-6">
+              <Camera className="w-12 h-12 text-emerald-500" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-800 mb-2">استخدام الكاميرا</h3>
+            <p className="text-slate-500 text-sm">التقط صورة للسيارة مباشرة</p>
+          </div>
         </div>
       )}
 
@@ -56,8 +69,8 @@ export default function Analysis() {
       {step === 'analyzing' && (
         <div className="mt-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-12 flex flex-col items-center text-center">
           <div className="relative mb-8">
-            <div className="absolute inset-0 bg-blue-100 rounded-full animate-ping opacity-75"></div>
-            <div className="relative bg-blue-600 p-6 rounded-full">
+            <div className="absolute inset-0 bg-primary-50 rounded-full animate-ping opacity-75"></div>
+            <div className="relative bg-primary-500 p-6 rounded-full">
               <Loader2 className="w-10 h-10 text-white animate-spin" />
             </div>
           </div>
@@ -66,7 +79,7 @@ export default function Analysis() {
           
           <div className="w-full max-w-md bg-slate-100 rounded-full h-3 mb-2 overflow-hidden">
             <div 
-              className="bg-blue-600 h-full rounded-full transition-all duration-300 ease-out"
+              className="bg-primary-500 h-full rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -117,7 +130,7 @@ export default function Analysis() {
                 </div>
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-slate-500">التكلفة التقديرية</span>
-                  <span className="text-2xl font-black text-blue-600">1,200 - 1,500 ريال</span>
+                  <span className="text-2xl font-black text-primary-500">1,200 - 1,500 ريال</span>
                 </div>
               </div>
             </div>
@@ -150,14 +163,19 @@ export default function Analysis() {
 
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-center gap-4">
               <h3 className="text-lg font-bold text-slate-800 mb-2">الإجراءات التالية</h3>
-              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors flex justify-center items-center gap-2">
+              <button className="w-full bg-primary-500 text-white py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors flex justify-center items-center gap-2">
                 <Download className="w-5 h-5" />
                 تحميل التقرير (PDF)
               </button>
-              <button className="w-full bg-white text-slate-700 border border-slate-300 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors flex justify-center items-center gap-2">
+              <a 
+                href={`https://wa.me/?text=${encodeURIComponent('🚗 *تقرير أضرار السيارة*\nالتكلفة: 1500 ريال\nالمدة: 12 ساعة\nرابط التقرير: https://openbody.app/report/123')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-[#25D366] text-white py-3 rounded-lg font-medium hover:bg-[#128C7E] transition-colors flex justify-center items-center gap-2"
+              >
                 <Share2 className="w-5 h-5" />
-                مشاركة التقرير
-              </button>
+                مشاركة عبر واتساب
+              </a>
               <button className="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-800 transition-colors mt-2">
                 إرسال إلى ورشة معتمدة
               </button>
@@ -167,7 +185,7 @@ export default function Analysis() {
           <div className="text-center pt-4">
              <button 
                 onClick={() => setStep('upload')}
-                className="text-slate-500 hover:text-blue-600 font-medium transition-colors underline"
+                className="text-slate-500 hover:text-primary-500 font-medium transition-colors underline"
              >
                إجراء فحص جديد
              </button>

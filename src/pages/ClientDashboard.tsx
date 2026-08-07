@@ -28,7 +28,7 @@ export default function ClientDashboard() {
         </div>
         <Link
           to="/analysis"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
+          className="bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
           فحص جديد
@@ -56,7 +56,7 @@ export default function ClientDashboard() {
             <tbody className="divide-y divide-slate-100">
               {reports.map((report) => (
                 <tr key={report.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-blue-600">{report.id}</td>
+                  <td className="px-6 py-4 font-medium text-primary-500">{report.id}</td>
                   <td className="px-6 py-4 text-slate-700">{report.car}</td>
                   <td className="px-6 py-4 text-slate-500">{report.date}</td>
                   <td className="px-6 py-4 text-slate-700">{report.cost}</td>
@@ -71,7 +71,7 @@ export default function ClientDashboard() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="text-slate-400 hover:text-blue-600 font-medium text-sm transition-colors">
+                    <button className="text-slate-400 hover:text-primary-500 font-medium text-sm transition-colors">
                       عرض
                     </button>
                   </td>

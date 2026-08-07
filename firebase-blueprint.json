@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "Report": {
+      "title": "Report",
+      "description": "An analysis report of car damage",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who owns this report"
+        },
+        "car": {
+          "type": "string"
+        },
+        "damageLevel": {
+          "type": "string",
+          "enum": ["خفيف", "متوسط", "شديد"]
+        },
+        "costEstimate": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["بانتظار الإصلاح", "قيد الإصلاح", "مكتمل"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "car", "damageLevel", "status"]
+    }
+  },
+  "firestore": {
+    "/reports/{reportId}": {
+      "schema": {
+        "$ref": "#/entities/Report"
+      },
+      "description": "Store all reports"
+    }
+  }
+}

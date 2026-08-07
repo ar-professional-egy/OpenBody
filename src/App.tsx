@@ -4,6 +4,7 @@ import Landing from './pages/Landing';
 import ClientDashboard from './pages/ClientDashboard';
 import WorkshopDashboard from './pages/WorkshopDashboard';
 import Analysis from './pages/Analysis';
+import Settings from './pages/Settings';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="client" element={<ClientDashboard />} />
           <Route path="workshop" element={<WorkshopDashboard />} />
           <Route path="analysis" element={<Analysis />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
