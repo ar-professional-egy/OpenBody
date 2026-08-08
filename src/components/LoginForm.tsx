@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { LogIn, Loader2, Phone, KeyRound } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
   const [verificationId, setVerificationId] = useState<ConfirmationResult | null>(null);
@@ -27,26 +27,26 @@ export function LoginForm() {
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phoneNumber.trim()) {
-      setError('الرجاء إدخال رقم الهاتف');
+      toast.error('الرجاء إدخال رقم الهاتف');
       return;
     }
     
     // Simple validation for international format
     if (!phoneNumber.startsWith('+')) {
-      setError('الرجاء إدخال رقم الهاتف مع الرمز الدولي (مثال: +966...)');
+      toast.error('الرجاء إدخال رقم الهاتف مع الرمز الدولي (مثال: +966...)');
       return;
     }
 
     try {
       setIsLoading(true);
-      setError(null);
       const appVerifier = window.recaptchaVerifier;
       const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
       setVerificationId(confirmationResult);
       setIsOtpSent(true);
+      toast.success('تم إرسال رمز التحقق بنجاح');
     } catch (err: any) {
       console.error('Send OTP error:', err);
-      setError(err.message || 'حدث خطأ أثناء إرسال رمز التحقق');
+      toast.error(err.message || 'حدث خطأ أثناء إرسال رمز التحقق');
       if (window.recaptchaVerifier) {
           window.recaptchaVerifier.render().then((widgetId: any) => {
               window.recaptchaVerifier.reset(widgetId);
@@ -60,18 +60,18 @@ export function LoginForm() {
   const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otp.trim() || !verificationId) {
-      setError('الرجاء إدخال رمز التحقق');
+      toast.error('الرجاء إدخال رمز التحقق');
       return;
     }
 
     try {
       setIsLoading(true);
-      setError(null);
       await verificationId.confirm(otp);
+      toast.success('تم تسجيل الدخول بنجاح');
       // AuthProvider will automatically pick up the user state change
     } catch (err: any) {
       console.error('Verify OTP error:', err);
-      setError('رمز التحقق غير صحيح أو منتهي الصلاحية');
+      toast.error('رمز التحقق غير صحيح أو منتهي الصلاحية');
     } finally {
       setIsLoading(false);
     }
@@ -89,12 +89,6 @@ export function LoginForm() {
           ? 'أدخل رمز التحقق الذي وصلك على واتساب' 
           : 'أدخل رقم هاتفك لتسجيل الدخول بأمان وسرعة.'}
       </p>
-
-      {error && (
-        <div className="w-full bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 text-center">
-          {error}
-        </div>
-      )}
 
       {!isOtpSent ? (
         <form onSubmit={handleSendCode} className="w-full space-y-4">

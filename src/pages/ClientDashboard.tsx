@@ -1,23 +1,33 @@
 import { Link } from 'react-router-dom';
 import { FileText, Plus, Clock, CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function ClientDashboard() {
-  const reports = [
-    {
-      id: 'REP-2023-1001',
-      date: '2023-10-15',
-      car: 'تويوتا كامري 2022',
-      status: 'بانتظار الإصلاح',
-      cost: '1,500 ريال',
-    },
-    {
-      id: 'REP-2023-0842',
-      date: '2023-08-22',
-      car: 'هيونداي إلنترا 2020',
-      status: 'مكتمل',
-      cost: '4,200 ريال',
-    },
-  ];
+  const [reports, setReports] = useState<any[]>([]);
+
+  useEffect(() => {
+    const savedReports = JSON.parse(localStorage.getItem('openbody_reports') || '[]');
+    if (savedReports.length > 0) {
+      setReports(savedReports);
+    } else {
+      setReports([
+        {
+          id: 'REP-2023-1001',
+          date: '2023-10-15',
+          car: 'تويوتا كامري 2022',
+          status: 'بانتظار الإصلاح',
+          cost: '1,500 ريال',
+        },
+        {
+          id: 'REP-2023-0842',
+          date: '2023-08-22',
+          car: 'هيونداي إلنترا 2020',
+          status: 'مكتمل',
+          cost: '4,200 ريال',
+        },
+      ]);
+    }
+  }, []);
 
   return (
     <div className="space-y-6">

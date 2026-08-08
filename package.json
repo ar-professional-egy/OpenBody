@@ -1,13 +1,16 @@
 {
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "vite build"
   },
   "dependencies": {
     "firebase": "^12.17.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.30.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.18.2",
     "recharts": "^3.10.1"
   },

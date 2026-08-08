@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth, logOut } from '../lib/firebase';
+import toast from 'react-hot-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -23,8 +24,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
+  const handleSignOut = async () => {
+    try {
+      await logOut();
+      toast.success('تم تسجيل الخروج بنجاح');
+    } catch (error) {
+      toast.error('حدث خطأ أثناء تسجيل الخروج');
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signOut: logOut }}>
+    <AuthContext.Provider value={{ user, loading, signOut: handleSignOut }}>
       {!loading && children}
     </AuthContext.Provider>
   );

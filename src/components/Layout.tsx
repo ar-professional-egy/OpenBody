@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { CarFront, User, Wrench, BarChart3, LogIn, LogOut, Settings as SettingsIcon } from 'lucide-react';
+import { CarFront, User, Wrench, BarChart3, LogIn, LogOut, Settings as SettingsIcon, LayoutDashboard, HelpCircle, TrendingUp } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { NotificationCenter } from './NotificationCenter';
 
 export default function Layout() {
   const location = useLocation();
@@ -10,7 +11,11 @@ export default function Layout() {
     { name: 'الرئيسية', path: '/', icon: <CarFront className="w-5 h-5" /> },
     { name: 'لوحة العميل', path: '/client', icon: <User className="w-5 h-5" /> },
     { name: 'لوحة الورشة', path: '/workshop', icon: <Wrench className="w-5 h-5" /> },
+    { name: 'لوحة التحكم', path: '/admin', icon: <LayoutDashboard className="w-5 h-5" /> },
     { name: 'فحص جديد', path: '/analysis', icon: <BarChart3 className="w-5 h-5" /> },
+    { name: 'إحصائياتي', path: '/stats', icon: <TrendingUp className="w-5 h-5" /> },
+    { name: 'الملف الشخصي', path: '/profile', icon: <User className="w-5 h-5" /> },
+    { name: 'المساعدة', path: '/help', icon: <HelpCircle className="w-5 h-5" /> },
     { name: 'الإعدادات', path: '/settings', icon: <SettingsIcon className="w-5 h-5" /> },
   ];
 
@@ -44,7 +49,10 @@ export default function Layout() {
               <div className="h-6 w-px bg-slate-200 mx-2"></div>
               {user ? (
                 <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium text-slate-700" dir="ltr">{user.displayName || user.email || user.phoneNumber}</span>
+                  <NotificationCenter />
+                  <Link to="/profile" className="text-sm font-medium text-slate-700 hover:text-primary-600 transition-colors" dir="ltr">
+                    {user.displayName || user.email || user.phoneNumber}
+                  </Link>
                   <button
                     onClick={signOut}
                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
