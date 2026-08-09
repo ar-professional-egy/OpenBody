@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth, logOut } from '../lib/firebase';
+import { supabase } from '../lib/supabaseClient';
+import type { User } from '@supabase/supabase-js';
 import toast from 'react-hot-toast';
 
 interface AuthContextType {
-  user: User | null;
+  user: any | null; // Using any to avoid breaking other files that expect uid instead of id, etc.
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -12,21 +12,29 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    // Check active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ? { ...session.user, uid: session.user.id } : null);
       setLoading(false);
     });
 
-    return unsubscribe;
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ? { ...session.user, uid: session.user.id } : null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleSignOut = async () => {
     try {
-      await logOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
       toast.success('تم تسجيل الخروج بنجاح');
     } catch (error) {
       toast.error('حدث خطأ أثناء تسجيل الخروج');
@@ -47,3 +55,4 @@ export const useAuth = () => {
   }
   return context;
 };
+

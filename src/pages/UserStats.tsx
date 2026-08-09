@@ -4,6 +4,16 @@ import toast from 'react-hot-toast';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function UserStats() {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulate API fetch delay
+    const fetchTimer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(fetchTimer);
+  }, []);
+
   const referralLink = 'https://openbody.app/download?ref=123';
 
   const handleShare = () => {
@@ -44,94 +54,129 @@ export default function UserStats() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-          <div className="p-3 bg-blue-50 text-blue-500 rounded-xl w-max mb-4">
-            <Wand2 className="w-6 h-6" />
-          </div>
-          <p className="text-sm font-medium text-slate-500 mb-1">التحليلات</p>
-          <h3 className="text-3xl font-black text-slate-800">156</h3>
-        </div>
-        
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-          <div className="p-3 bg-emerald-50 text-emerald-500 rounded-xl w-max mb-4">
-            <FileText className="w-6 h-6" />
-          </div>
-          <p className="text-sm font-medium text-slate-500 mb-1">التقارير المصدرة</p>
-          <h3 className="text-3xl font-black text-slate-800">89</h3>
-        </div>
+        {loading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col animate-pulse">
+              <div className="p-3 bg-slate-200 rounded-xl w-12 h-12 mb-4"></div>
+              <div className="h-4 bg-slate-200 rounded w-20 mb-3"></div>
+              <div className="h-8 bg-slate-200 rounded w-16"></div>
+            </div>
+          ))
+        ) : (
+          <>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+              <div className="p-3 bg-blue-50 text-blue-500 rounded-xl w-max mb-4">
+                <Wand2 className="w-6 h-6" />
+              </div>
+              <p className="text-sm font-medium text-slate-500 mb-1">التحليلات</p>
+              <h3 className="text-3xl font-black text-slate-800">156</h3>
+            </div>
+            
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+              <div className="p-3 bg-emerald-50 text-emerald-500 rounded-xl w-max mb-4">
+                <FileText className="w-6 h-6" />
+              </div>
+              <p className="text-sm font-medium text-slate-500 mb-1">التقارير المصدرة</p>
+              <h3 className="text-3xl font-black text-slate-800">89</h3>
+            </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-          <div className="p-3 bg-amber-50 text-amber-500 rounded-xl w-max mb-4">
-            <TrendingUp className="w-6 h-6" />
-          </div>
-          <p className="text-sm font-medium text-slate-500 mb-1">المبالغ الموفرة</p>
-          <h3 className="text-3xl font-black text-slate-800">2,450<span className="text-sm text-slate-500 font-normal mr-1">د.ك</span></h3>
-        </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+              <div className="p-3 bg-amber-50 text-amber-500 rounded-xl w-max mb-4">
+                <TrendingUp className="w-6 h-6" />
+              </div>
+              <p className="text-sm font-medium text-slate-500 mb-1">المبالغ الموفرة</p>
+              <h3 className="text-3xl font-black text-slate-800">2,450<span className="text-sm text-slate-500 font-normal mr-1">د.ك</span></h3>
+            </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-          <div className="p-3 bg-purple-50 text-purple-500 rounded-xl w-max mb-4">
-            <Star className="w-6 h-6" />
-          </div>
-          <p className="text-sm font-medium text-slate-500 mb-1">متوسط تقييمك</p>
-          <h3 className="text-3xl font-black text-slate-800">4.8</h3>
-        </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+              <div className="p-3 bg-purple-50 text-purple-500 rounded-xl w-max mb-4">
+                <Star className="w-6 h-6" />
+              </div>
+              <p className="text-sm font-medium text-slate-500 mb-1">متوسط تقييمك</p>
+              <h3 className="text-3xl font-black text-slate-800">4.8</h3>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-            <h3 className="text-lg font-bold text-slate-800">أكثر الأضرار شيوعاً (آخر 30 يوم)</h3>
-            <div className="flex flex-wrap gap-2">
-              {damageData.map(d => (
-                <button
-                  key={d.name}
-                  onClick={() => toggleFilter(d.name)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-                    activeFilters.includes(d.name) 
-                      ? 'bg-slate-800 text-white' 
-                      : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
-                  }`}
-                >
-                  {d.name}
-                </button>
-              ))}
+        {loading ? (
+          <>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 animate-pulse">
+              <div className="h-6 bg-slate-200 rounded w-1/2 mb-6"></div>
+              <div className="h-[240px] bg-slate-200 rounded-full w-[240px] mx-auto"></div>
             </div>
-          </div>
-          <div className="h-[240px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={filteredData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {filteredData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 animate-pulse">
+              <div className="h-6 bg-slate-200 rounded w-1/3 mb-6"></div>
+              <div className="space-y-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-4">
+                    <div className="h-4 bg-slate-200 rounded w-24"></div>
+                    <div className="flex-1 h-3 bg-slate-200 rounded-full"></div>
+                    <div className="h-4 bg-slate-200 rounded w-8"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h3 className="text-lg font-bold text-slate-800">أكثر الأضرار شيوعاً (آخر 30 يوم)</h3>
+                <div className="flex flex-wrap gap-2">
+                  {damageData.map(d => (
+                    <button
+                      key={d.name}
+                      onClick={() => toggleFilter(d.name)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
+                        activeFilters.includes(d.name) 
+                          ? 'bg-slate-800 text-white' 
+                          : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                      }`}
+                    >
+                      {d.name}
+                    </button>
                   ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  itemStyle={{ color: '#334155', fontWeight: 'bold' }}
-                />
-                <Legend verticalAlign="bottom" height={36} iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+                </div>
+              </div>
+              <div className="h-[240px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={filteredData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {filteredData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      itemStyle={{ color: '#334155', fontWeight: 'bold' }}
+                    />
+                    <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-6">أكثر الأجزاء تضرراً</h3>
-          <div className="space-y-4">
-            <ProgressBar label="صدام أمامي" value={35} total={100} color="bg-blue-500" />
-            <ProgressBar label="أبواب" value={28} total={100} color="bg-indigo-500" />
-            <ProgressBar label="رفارف" value={20} total={100} color="bg-cyan-500" />
-            <ProgressBar label="مصابيح" value={12} total={100} color="bg-sky-500" />
-          </div>
-        </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+              <h3 className="text-lg font-bold text-slate-800 mb-6">أكثر الأجزاء تضرراً</h3>
+              <div className="space-y-4">
+                <ProgressBar label="صدام أمامي" value={35} total={100} color="bg-blue-500" />
+                <ProgressBar label="أبواب" value={28} total={100} color="bg-indigo-500" />
+                <ProgressBar label="رفارف" value={20} total={100} color="bg-cyan-500" />
+                <ProgressBar label="مصابيح" value={12} total={100} color="bg-sky-500" />
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="bg-primary-50 p-8 rounded-2xl border border-primary-100 flex flex-col md:flex-row items-center justify-between gap-6">

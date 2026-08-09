@@ -31,6 +31,25 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Promo Video Placeholder */}
+      <section className="max-w-4xl mx-auto w-full px-4">
+        <div className="aspect-video bg-slate-900 rounded-2xl overflow-hidden shadow-2xl relative group cursor-pointer border-4 border-white">
+          <img 
+            src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&q=80&w=1200" 
+            alt="OpenBody Preview" 
+            className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+            <div className="w-20 h-20 bg-primary-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <svg className="w-8 h-8 text-white ml-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+            <p className="text-white font-bold text-lg drop-shadow-md">شاهد كيف يعمل OpenBody (فيديو ترويجي)</p>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="grid md:grid-cols-4 gap-8">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center gap-4 hover:-translate-y-1 transition-transform">

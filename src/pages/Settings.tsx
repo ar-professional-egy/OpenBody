@@ -11,6 +11,7 @@ export default function Settings() {
   const [voiceAssistant, setVoiceAssistant] = useState(true);
   const [autoBackup, setAutoBackup] = useState(true);
   const [reportLanguage, setReportLanguage] = useState('العربية');
+  const [aiDataSharing, setAiDataSharing] = useState(true);
 
   const handleBackup = () => {
     alert('جاري النسخ الاحتياطي السحابي...');
@@ -74,20 +75,36 @@ export default function Settings() {
 
         {/* المساعد الصوتي */}
         <div className="p-6">
-          <h2 className="text-sm font-bold text-primary-500 mb-4">المساعد الصوتي</h2>
-          <label className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer">
-            <div className="flex items-center gap-3">
-              <Mic className="w-5 h-5 text-slate-400" />
-              <div className="text-right">
-                <p className="font-medium text-slate-800">تفعيل المساعد الصوتي</p>
-                <p className="text-sm text-slate-500">قل "يا OpenBody" للبدء</p>
+          <h2 className="text-sm font-bold text-primary-500 mb-4">الذكاء الاصطناعي</h2>
+          <div className="space-y-4">
+            <label className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer">
+              <div className="flex items-center gap-3">
+                <Mic className="w-5 h-5 text-slate-400" />
+                <div className="text-right">
+                  <p className="font-medium text-slate-800">تفعيل المساعد الصوتي</p>
+                  <p className="text-sm text-slate-500">قل "يا OpenBody" للبدء</p>
+                </div>
               </div>
-            </div>
-            <div className={`relative inline-block w-12 h-6 rounded-full transition-colors ${voiceAssistant ? 'bg-primary-500' : 'bg-slate-300'}`}>
-              <input type="checkbox" className="opacity-0 w-0 h-0" checked={voiceAssistant} onChange={() => setVoiceAssistant(!voiceAssistant)} />
-              <span className={`absolute right-1 top-1 w-4 h-4 rounded-full bg-white transition-transform transform ${voiceAssistant ? '-translate-x-6' : ''}`}></span>
-            </div>
-          </label>
+              <div className={`relative inline-block w-12 h-6 rounded-full transition-colors ${voiceAssistant ? 'bg-primary-500' : 'bg-slate-300'}`}>
+                <input type="checkbox" className="opacity-0 w-0 h-0" checked={voiceAssistant} onChange={() => setVoiceAssistant(!voiceAssistant)} />
+                <span className={`absolute right-1 top-1 w-4 h-4 rounded-full bg-white transition-transform transform ${voiceAssistant ? '-translate-x-6' : ''}`}></span>
+              </div>
+            </label>
+            
+            <label className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer border-t border-slate-100 pt-4">
+              <div className="flex items-center gap-3">
+                <Cloud className="w-5 h-5 text-slate-400" />
+                <div className="text-right">
+                  <p className="font-medium text-slate-800">تحسين النماذج ببياناتي</p>
+                  <p className="text-sm text-slate-500">مشاركة مجهولة لتحسين دقة التحليل</p>
+                </div>
+              </div>
+              <div className={`relative inline-block w-12 h-6 rounded-full transition-colors ${aiDataSharing ? 'bg-primary-500' : 'bg-slate-300'}`}>
+                <input type="checkbox" className="opacity-0 w-0 h-0" checked={aiDataSharing} onChange={() => setAiDataSharing(!aiDataSharing)} />
+                <span className={`absolute right-1 top-1 w-4 h-4 rounded-full bg-white transition-transform transform ${aiDataSharing ? '-translate-x-6' : ''}`}></span>
+              </div>
+            </label>
+          </div>
         </div>
 
         {/* النسخ الاحتياطي */}

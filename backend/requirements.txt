@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pydantic-settings
+supabase
+python-multipart
+python-jose

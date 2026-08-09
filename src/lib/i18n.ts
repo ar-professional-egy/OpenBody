@@ -1,4 +1,4 @@
-export type Language = 'ar' | 'en';
+export type Language = 'ar' | 'en' | 'fr';
 
 type Translations = {
   [key in Language]: {
@@ -43,6 +43,25 @@ const translations: Translations = {
       dent: 'Dent',
       crack: 'Crack',
       rust: 'Rust'
+    }
+  },
+  fr: {
+    app_name: 'OpenBody',
+    welcome: 'Bienvenue sur OpenBody',
+    login_whatsapp: 'Connexion avec WhatsApp',
+    phone_number: 'Numéro de téléphone',
+    analyze: 'Analyser les dommages',
+    damages_found: 'Dommages trouvés',
+    cost_estimate: 'Coût estimé',
+    repair_time: 'Temps de réparation',
+    settings: 'Paramètres',
+    help: 'Centre d\'aide',
+    profile: 'Profil',
+    damage_types: {
+      scratch: 'Égratignure',
+      dent: 'Bosse',
+      crack: 'Fissure',
+      rust: 'Rouille'
     }
   }
 };

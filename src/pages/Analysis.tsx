@@ -34,17 +34,28 @@ export default function Analysis() {
             setIsCameraOpen(false);
             setStep('results');
             
-            // Save to local storage
-            const existingReports = JSON.parse(localStorage.getItem('openbody_reports') || '[]');
-            const newReport = {
-              id: `REP-${new Date().getFullYear()}-${Math.floor(Math.random() * 10000)}`,
-              date: new Date().toISOString().split('T')[0],
-              car: 'سيارة محددة بالذكاء الاصطناعي',
-              status: 'مكتمل',
-              cost: '1,500 ريال',
-              image: capturedImage
+            // Save to database
+            const saveReport = async () => {
+              try {
+                // Try sending to our backend service
+                // const apiResponse = await apiService.submitAnalysis({ image_data: capturedImage || '' });
+                
+                // Direct Supabase storage approach
+                const { supabase } = await import('../lib/supabaseClient');
+                const newReportData = {
+                  car: 'سيارة محددة بالذكاء الاصطناعي',
+                  status: 'بانتظار التسعير',
+                  cost_estimate: '1,500 ريال',
+                  image_url: capturedImage, // In a real app, upload this to a bucket first and store the URL
+                  damage_level: 'متوسط'
+                };
+                
+                await supabase.from('analysis_reports').insert([newReportData]);
+              } catch (e) {
+                console.error('Failed to save to Supabase:', e);
+              }
             };
-            localStorage.setItem('openbody_reports', JSON.stringify([newReport, ...existingReports]));
+            saveReport();
 
             // Simulate FCM Real-time alert
             const existingNotifications = JSON.parse(localStorage.getItem('openbody_notifications') || '[]');

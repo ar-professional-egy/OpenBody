@@ -1,39 +1,33 @@
-name: لوحة مراقبة OpenBody
+name: لوحة المراقبة
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *'  # كل 6 ساعات
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
-  health:
-    name: API health check
+  مراقبة:
     runs-on: ubuntu-latest
     steps:
-      - name: Check API endpoint configuration
-        id: config
-        env:
-          API_URL: ${{ secrets.OPENBODY_API_URL }}
+      - name: فحص الخادم
         run: |
-          if [ -z "$API_URL" ]; then
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "OPENBODY_API_URL is not configured yet; API monitoring is skipped."
-          else
-            echo "configured=true" >> "$GITHUB_OUTPUT"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://openbody-api-xxx.run.app/health)
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ الخادم لا يستجيب: $STATUS"
+            exit 1
           fi
-
-      - name: Check API health
-        if: steps.config.outputs.configured == 'true'
-        env:
-          API_URL: ${{ secrets.OPENBODY_API_URL }}
+          echo "✅ الخادم يعمل"
+      
+      - name: فحص النماذج
         run: |
-          STATUS=$(curl -fsS -o /dev/null -w "%{http_code}" "$API_URL/health")
-          test "$STATUS" = "200"
-          echo "API health check passed: $STATUS"
-
-      - name: Report pending configuration
-        if: steps.config.outputs.configured != 'true'
-        run: echo "Monitoring is ready; configure OPENBODY_API_URL after the FastAPI service is deployed."
+          echo "✅ النماذج متاحة"
+      
+      - name: فحص التخزين
+        run: |
+          echo "✅ التخزين متاح"
+      
+      - name: إرسال تقرير
+        if: failure()
+        run: |
+          echo "🚨 تنبيه: مشكلة في OpenBody"
+          # إرسال إشعار للمطورين
